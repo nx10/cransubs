@@ -1,38 +1,22 @@
-# create-svelte
+# CRAN submission tracker
 
-Everything you need to build a Svelte project, powered by [`create-svelte`](https://github.com/sveltejs/kit/tree/master/packages/create-svelte).
+Website: https://nx10.github.io/cransubs
 
-## Creating a project
+Server repo: https://github.com/nx10/cransubs-server
 
-If you're seeing this, you've probably already done this step. Congrats!
+## About
+* This tracker is inofficial and in no way affiliated with CRAN or the R Project.
+* The primary goal of this site is to make tracking package submissions more accessible.
+* Both backend and frontend are fully open source and available on GitHub.
+* To minimize traffic to the CRAN network, the backend lazily fetches data from the CRAN incoming FTP server (ftp://cran.r-project.org/incoming/) and caches it in memory. (This means when nobody is looking at this page, there will be no traffic to CRAN and there is no increased traffic for concurrent users.)
+* A big shout-out to the CRAN members reviewing many packages every week.
 
-```bash
-# create a new project in the current directory
-npm create svelte@latest
+## Alternatives
+* [r-hub/cransays CRAN incoming dashbord (website)](https://r-hub.github.io/cransays/articles/dashboard.html)
+* [CRAN incoming FTP (website)](https://cran.r-project.org/incoming/)
+* [foghorn (R package)](https://cran.r-project.org/web/packages/foghorn/index.html)
 
-# create a new project in my-app
-npm create svelte@latest my-app
-```
-
-## Developing
-
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
-
-```bash
-npm run dev
-
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
-```
-
-## Building
-
-To create a production version of your app:
-
-```bash
-npm run build
-```
-
-You can preview the production build with `npm run preview`.
-
-> To deploy your app, you may need to install an [adapter](https://kit.svelte.dev/docs/adapters) for your target environment.
+## References
+* [R journal (2017): Changes on CRAN (Kurt Hornik, Uwe Ligges and Achim Zeileis)](https://journal.r-project.org/archive/2018-1/cran.pdf)
+* [[R-pkg-devel] Meaning and consequences of action pending in the submission pipeline](https://stat.ethz.ch/pipermail/r-package-devel/2019q1/003631.html)
+* [CRAN Analysis: Edgar Ruiz (2018)](https://github.com/edgararuiz-zz/cran-stages)

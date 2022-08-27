@@ -17,7 +17,9 @@
 	<ul class="list-disc">
 		<li>This tracker is inofficial and in no way affiliated with CRAN or the R Project.</li>
 		<li>The primary goal of this site is to make tracking package submissions more accessible.</li>
-		<li>Both backend and frontend are fully open source and available on GitHub.</li>
+		<li>Both backend (<a class="hover:underline" href="https://github.com/nx10/cransubs-server">nx10/cransubs-server</a>) 
+            and frontend (<a class="hover:underline" href="https://github.com/nx10/cransubs">nx10/cransubs</a>) 
+            are fully open source and available on GitHub.</li>
 		<li>
 			To minimize traffic to the CRAN network, the backend lazily fetches data from the CRAN
 			incoming FTP server (<a
