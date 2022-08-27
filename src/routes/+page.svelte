@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { base } from '$app/paths';
 	import { iso2ago } from '../utils';
 	import { pkg_url_full } from '../server_data';
 	import { subrepo } from '../stores.js';
@@ -23,7 +24,7 @@
 </svelte:head>
 
 <main class="my-0 mx-auto max-w-3xl px-2">
-	<a href="/"
+	<a href="{base}/"
 		><div class="text-3xl font-bold pr-2 text-slate-600 text-center mb-5 mt-4">
 			CRAN submission tracker
 		</div></a
@@ -65,7 +66,7 @@
 				{#each queue.queue as sub, idx_sub}
 					{#if expand.indexOf(queue) !== -1 || idx_sub < 5 || idx_sub > queue.queue.length - 6}
 						<a
-							href={pkg_url_full(sub)}
+							href={base + '/' + pkg_url_full(sub)}
 							class="flex flex-row space-x-1 items-center hover:bg-slate-200 odd:bg-white even:bg-slate-50 px-2 py-1 first:rounded-t-md last:rounded-b-md"
 						>
 							<div class="font-light text-sm w-14 text-slate-500">#{idx_sub + 1}</div>
@@ -91,7 +92,7 @@
 
 		<div class="text-slate-500 my-4 ">
 			<span class="hover:underline text-slate-600"
-				><a href="/about" class="my-4">About this page</a></span
+				><a href="{base}/about" class="my-4">About this page</a></span
 			>
 
 			<span class="float-right text-sm font-light"

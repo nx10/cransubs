@@ -1,9 +1,13 @@
+<script lang="ts">
+	import { base } from '$app/paths';
+</script>
+
 <svelte:head>
 	<title>CRAN sub tracker: About</title>
 </svelte:head>
 
 <main class="my-0 mx-auto max-w-3xl px-2">
-	<a href="/"
+	<a href="{base}/"
 		><div class="text-3xl font-bold pr-2 text-slate-600 text-center mb-5 mt-4">
 			CRAN submission tracker
 		</div></a
@@ -65,7 +69,7 @@
 	</ul>
 
 	<div class="mt-3 ">
-		<a href="/" class="text-l text-slate-500 hover:underline hover:text-slate-800"
+		<a href="{base}/" class="text-l text-slate-500 hover:underline hover:text-slate-800"
 			>&larr; Back to browse</a
 		>
 	</div>

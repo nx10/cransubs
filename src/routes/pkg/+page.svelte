@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { base } from '$app/paths';
 	import { subrepo } from '../../stores.js';
 	import { page } from '$app/stores';
 	import { humanRedableMemoryUnits, iso2ago } from '../../utils.js';
@@ -17,7 +18,7 @@
 </svelte:head>
 
 <main class="my-0 mx-auto max-w-3xl px-2">
-	<a href="/"
+	<a href="{base}/"
 		><div class="text-3xl font-bold pr-2 text-slate-600 text-center mb-5 mt-4">
 			CRAN submission tracker
 		</div></a
@@ -55,7 +56,7 @@
 			<div class="px-10 my-3 text-slate-700">
 				{pkg[1].info.longdescription}
 				<span class="text-sm font-light text-slate-500">
-					<a href={pkg[1].info.reference} class="my-4">({pkg[1].info.reference_label})</a>
+					<a href={base + '/' + pkg[1].info.reference} class="my-4">({pkg[1].info.reference_label})</a>
 				</span>
 			</div>
 
@@ -95,7 +96,7 @@
 			<div class="float-right text-sm font-light text-slate-500">
 				<span class="">Updated {iso2ago(pkg[0].request_time)}.</span>
 				<span class="hover:underline text-slate-600"
-					><a href="/about" class="my-4"> About this page</a></span
+					><a href="{base}/about" class="my-4"> About this page</a></span
 				>
 			</div>
 		{:else}
@@ -106,7 +107,7 @@
 	{/await}
 
 	<div class="mt-3 ">
-		<a href="/" class="text-l text-slate-500 hover:underline hover:text-slate-800"
+		<a href="{base}/" class="text-l text-slate-500 hover:underline hover:text-slate-800"
 			>&larr; Back to browse</a
 		>
 	</div>
