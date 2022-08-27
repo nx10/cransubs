@@ -56,7 +56,7 @@
 			<div class="px-10 my-3 text-slate-700">
 				{pkg[1].info.longdescription}
 				<span class="text-sm font-light text-slate-500">
-					<a href={base + '/' + pkg[1].info.reference} class="my-4">({pkg[1].info.reference_label})</a>
+					<a href={pkg[1].info.reference} class="my-4">({pkg[1].info.reference_label})</a>
 				</span>
 			</div>
 
