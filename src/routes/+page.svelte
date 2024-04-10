@@ -3,10 +3,11 @@
 	import { iso2ago } from '../utils';
 	import { pkg_url_full } from '../server_data';
 	import { subrepo } from '../stores.js';
+	import { page } from '$app/stores';
 
 	const expanded: CranQueue[] = [];
 
-	let search = '';
+	let search = decodeURIComponent($page.url.hash.substring(1)) || '';
 
 	$: subrepo_filtered = $subrepo.then((subrepo) => subrepo.filter(search));
 
@@ -58,7 +59,7 @@
 	{:then subrepo}
 		{#each subrepo.queues as queue}
 			<div class="flex flex-row space-x-1 items-end pt-3 mb-1">
-				<div class="flex-auto text-2xl font-bold ">{queue.info.name}</div>
+				<div class="flex-auto text-2xl font-bold">{queue.info.name}</div>
 				<div class="text-slate-500">{queue.queue.length} packages</div>
 			</div>
 			<p class="italic text-sm text-slate-600">{queue.info.description}</p>
@@ -90,7 +91,7 @@
 			<p class="text-slate-800">No submissions match the search query.</p>
 		{/each}
 
-		<div class="text-slate-500 my-4 ">
+		<div class="text-slate-500 my-4">
 			<span class="hover:underline text-slate-600"
 				><a href="{base}/about" class="my-4">About this page</a></span
 			>
