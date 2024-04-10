@@ -1,6 +1,6 @@
 {
 	"name": "cran-upcoming",
-	"version": "0.0.1",
+	"version": "0.0.2",
 	"private": true,
 	"scripts": {
 		"dev": "vite dev",
@@ -13,30 +13,29 @@
 		"deploy": "npm run build && npx gh-pages -d build -t"
 	},
 	"devDependencies": {
-		"@sveltejs/adapter-auto": "next",
-		"@sveltejs/adapter-static": "^1.0.0-next.39",
-		"@sveltejs/kit": "next",
-		"@types/luxon": "^3.0.0",
-		"@typescript-eslint/eslint-plugin": "^5.27.0",
-		"@typescript-eslint/parser": "^5.27.0",
-		"autoprefixer": "^10.4.8",
-		"eslint": "^8.16.0",
-		"eslint-config-prettier": "^8.3.0",
-		"eslint-plugin-svelte3": "^4.0.0",
-		"gh-pages": "^4.0.0",
-		"postcss": "^8.4.16",
-		"prettier": "^2.6.2",
-		"prettier-plugin-svelte": "^2.7.0",
-		"svelte": "^3.44.0",
-		"svelte-check": "^2.7.1",
-		"svelte-preprocess": "^4.10.7",
-		"tailwindcss": "^3.1.8",
-		"tslib": "^2.3.1",
-		"typescript": "^4.7.4",
-		"vite": "^3.0.4"
+		"@sveltejs/adapter-auto": "^3.2.0",
+		"@sveltejs/adapter-static": "^3.0.1",
+		"@sveltejs/kit": "^2.0.0",
+		"@sveltejs/vite-plugin-svelte": "^3.0.0",
+		"@types/eslint": "^8.56.0",
+		"@typescript-eslint/eslint-plugin": "^7.0.0",
+		"@typescript-eslint/parser": "^7.0.0",
+		"autoprefixer": "^10.4.19",
+		"eslint": "^8.56.0",
+		"eslint-config-prettier": "^9.1.0",
+		"eslint-plugin-svelte": "^2.35.1",
+		"postcss": "^8.4.38",
+		"prettier": "^3.1.1",
+		"prettier-plugin-svelte": "^3.1.2",
+		"svelte": "^4.2.7",
+		"svelte-check": "^3.6.0",
+		"tailwindcss": "^3.4.3",
+		"tslib": "^2.4.1",
+		"typescript": "^5.0.0",
+		"vite": "^5.0.3"
 	},
 	"type": "module",
 	"dependencies": {
-		"luxon": "^3.0.1"
+		"luxon": "^3.4.4"
 	}
 }
