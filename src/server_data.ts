@@ -8,9 +8,9 @@ export const CRAN_QUEUES: { [qid: string]: CranQueueInfo } = {
     newbies: {
         order: 0,
         name: 'Newbies',
-        description: 'First time submission.',
-        longdescription: 'This is a new package. New packages are queued ' +
-            'for manual first time inspection.',
+        description: 'First-time and unarchival submissions.',
+        longdescription: 'This is either a new package or a package to be unarchived. ' +
+            'Such packages are queued for manual inspection.',
         reference: 'https://journal.r-project.org/archive/2018-1/cran.pdf',
         reference_label: 'Learn more: Hornik, K., Ligges, U., & Zeileis, A. (2018). Changes on CRAN. 2018-07-01 to 2018-12-31. The R Journal, 10(2), 1-3.',
     },
