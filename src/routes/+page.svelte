@@ -4,10 +4,15 @@
 	import { pkg_url_full } from '../server_data';
 	import { subrepo } from '../stores.js';
 	import { page } from '$app/stores';
+    import { onDestroy } from 'svelte'
 
 	const expanded: CranQueue[] = [];
 
 	let search = decodeURIComponent($page.url.hash.substring(1)) || '';
+
+	onDestroy(page.subscribe((val) => {
+		search = decodeURIComponent(val.url.hash.substring(1)) || search;
+	}));
 
 	$: subrepo_filtered = $subrepo.then((subrepo) => subrepo.filter(search));
 
