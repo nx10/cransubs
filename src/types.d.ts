@@ -14,6 +14,7 @@ interface Submission {
     pkg_name: string;
     pkg_version: string;
     request_time: string;
+    original_position?: number;
 }
 interface Snapshot {
     capture_duration: number;

@@ -197,7 +197,9 @@ export class SubmissionRepo {
         const str_lower = str.toLowerCase();
         re.queues = this.queues.map((qu) => ({
             info: qu.info,
-            queue: qu.queue.filter((sub) => sub.pkg_name.toLowerCase().search(str_lower) > -1)
+            queue: qu.queue
+                .map((sub, idx) => ({ ...sub, original_position: sub.original_position ?? idx + 1 }))
+                .filter((sub) => sub.pkg_name.toLowerCase().search(str_lower) > -1)
         })).filter((qu) => qu.queue.length > 0);
         return re;
     }

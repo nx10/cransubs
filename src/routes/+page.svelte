@@ -75,7 +75,7 @@
 							href={base + pkg_url_full(sub)}
 							class="flex flex-row space-x-1 items-center hover:bg-slate-200 odd:bg-white even:bg-slate-50 px-2 py-1 first:rounded-t-md last:rounded-b-md"
 						>
-							<div class="font-light text-sm w-14 text-slate-500">#{idx_sub + 1}</div>
+							<div class="font-light text-sm w-14 text-slate-500">#{sub.original_position ?? (idx_sub + 1)}</div>
 							<div class="text-slate-900">
 								{sub.pkg_name}
 							</div>
