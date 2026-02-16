@@ -1,25 +1,34 @@
 <script lang="ts">
 	import { base } from '$app/paths';
+	import { Separator } from '$lib/components/ui/separator/index.js';
 </script>
 
 <svelte:head>
 	<title>CRAN sub tracker: About</title>
 </svelte:head>
 
-<main class="my-0 mx-auto max-w-3xl px-2">
-	<a href="{base}/"
-		><div class="text-3xl font-bold pr-2 text-slate-600 text-center mb-5 mt-4">
+<main class="mx-auto my-0 max-w-3xl px-2">
+	<a href="{base}/">
+		<div class="text-muted-foreground mt-4 mb-5 pr-2 text-center text-3xl font-bold">
 			CRAN submission tracker
-		</div></a
-	>
+		</div>
+	</a>
+
 	<p>Please report issues with this site via the GitHub issue tracker or contact me directly.</p>
-	<h3 class="font-bold text-xl my-4">About</h3>
-	<ul class="list-disc">
+
+	<Separator class="my-4" />
+
+	<h3 class="my-4 text-xl font-bold">About</h3>
+	<ul class="list-disc space-y-1 pl-5">
 		<li>This tracker is inofficial and in no way affiliated with CRAN or the R Project.</li>
 		<li>The primary goal of this site is to make tracking package submissions more accessible.</li>
-		<li>Both backend (<a class="hover:underline" href="https://github.com/nx10/cransubs-server">nx10/cransubs-server</a>) 
-            and frontend (<a class="hover:underline" href="https://github.com/nx10/cransubs">nx10/cransubs</a>) 
-            are fully open source and available on GitHub.</li>
+		<li>
+			Both backend (<a class="hover:underline" href="https://github.com/nx10/cransubs-server"
+				>nx10/cransubs-server</a
+			>) and frontend (<a class="hover:underline" href="https://github.com/nx10/cransubs"
+				>nx10/cransubs</a
+			>) are fully open source and available on GitHub.
+		</li>
 		<li>
 			To minimize traffic to the CRAN network, the backend lazily fetches data from the CRAN
 			incoming FTP server (<a
@@ -30,8 +39,11 @@
 		</li>
 		<li>A big shout-out to the CRAN members reviewing many packages every week.</li>
 	</ul>
-	<h3 class="font-bold text-xl my-4">Alternatives</h3>
-	<ul class="list-disc">
+
+	<Separator class="my-4" />
+
+	<h3 class="my-4 text-xl font-bold">Alternatives</h3>
+	<ul class="list-disc space-y-1 pl-5">
 		<li>
 			<a class="hover:underline" href="https://r-hub.github.io/cransays/articles/dashboard.html"
 				>r-hub/cransays CRAN incoming dashbord (website)</a
@@ -49,8 +61,10 @@
 		</li>
 	</ul>
 
-	<h3 class="font-bold text-xl my-4">References</h3>
-	<ul class="list-disc">
+	<Separator class="my-4" />
+
+	<h3 class="my-4 text-xl font-bold">References</h3>
+	<ul class="list-disc space-y-1 pl-5">
 		<li>
 			<a class="hover:underline" href="https://journal.r-project.org/archive/2018-1/cran.pdf"
 				>R journal (2017): Changes on CRAN (Kurt Hornik, Uwe Ligges and Achim Zeileis)</a
@@ -70,9 +84,9 @@
 		</li>
 	</ul>
 
-	<div class="mt-3 ">
-		<a href="{base}/" class="text-l text-slate-500 hover:underline hover:text-slate-800"
-			>&larr; Back to browse</a
-		>
+	<div class="mt-6">
+		<a href="{base}/" class="text-muted-foreground hover:text-foreground hover:underline">
+			&larr; Back to browse
+		</a>
 	</div>
 </main>
