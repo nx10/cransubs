@@ -1,14 +1,17 @@
 <script lang="ts">
 	import { base } from '$app/paths';
 	import { page } from '$app/state';
-	import { iso2ago, humanReadableMemoryUnits } from '$lib/utils.js';
+	import { iso2ago, humanReadableMemoryUnits, copyToClipboard } from '$lib/utils.js';
 	import { pkg_url_full, pkg_url_name } from '$lib/server-data.js';
 	import { getSubrepo } from '$lib/stores.svelte.js';
-	import { Button } from '$lib/components/ui/button/index.js';
-	import * as Card from '$lib/components/ui/card/index.js';
-	import { Input } from '$lib/components/ui/input/index.js';
 	import { Skeleton } from '$lib/components/ui/skeleton/index.js';
-	import { Separator } from '$lib/components/ui/separator/index.js';
+	import { Input } from '$lib/components/ui/input/index.js';
+	import { Button } from '$lib/components/ui/button/index.js';
+	import ArrowLeft from '@lucide/svelte/icons/arrow-left';
+	import Copy from '@lucide/svelte/icons/copy';
+	import Check from '@lucide/svelte/icons/check';
+	import ExternalLink from '@lucide/svelte/icons/external-link';
+	import { toast } from 'svelte-sonner';
 
 	const pkgid = decodeURIComponent(page.url.hash.substring(1));
 
@@ -18,142 +21,216 @@
 			return uc.length > 1 ? subrepo.find_pkg(uc[0], uc[1]) : subrepo.find_pkg(uc[0]);
 		})
 	);
+
+	let copiedField: string | null = $state(null);
+
+	async function handleCopy(text: string, field: string) {
+		const ok = await copyToClipboard(text);
+		if (ok) {
+			copiedField = field;
+			toast.success('Copied to clipboard');
+			setTimeout(() => (copiedField = null), 2000);
+		}
+	}
 </script>
 
 <svelte:head>
-	<title>CRAN sub tracker</title>
+	<title>CRAN Submissions</title>
 </svelte:head>
 
-<main class="mx-auto my-0 max-w-3xl px-2">
-	<a href="{base}/">
-		<div class="text-muted-foreground mt-4 mb-5 pr-2 text-center text-3xl font-bold">
-			CRAN submission tracker
+{#await pkg}
+	<div class="space-y-6 animate-fade-in">
+		<Skeleton class="h-5 w-40" />
+		<div class="flex items-baseline gap-3">
+			<Skeleton class="h-10 w-48" />
+			<Skeleton class="h-8 w-24" />
 		</div>
-	</a>
-
-	{#await pkg}
-		<div class="space-y-4">
-			<div class="flex items-baseline gap-2">
-				<Skeleton class="h-12 w-48" />
-				<Skeleton class="h-10 w-24" />
-			</div>
-			<div class="grid grid-cols-3 gap-4">
-				<Skeleton class="h-28" />
-				<Skeleton class="h-28" />
-				<Skeleton class="h-28" />
-			</div>
-			<Skeleton class="h-20 w-full" />
+		<div class="grid grid-cols-1 gap-6 sm:grid-cols-3">
+			<Skeleton class="h-20" />
+			<Skeleton class="h-20" />
+			<Skeleton class="h-20" />
 		</div>
-	{:then pkg}
-		{#if pkg}
-			<h1>
-				<span class="text-foreground pr-2 text-5xl font-bold">{pkg[0].pkg_name}</span>
-				<span class="text-muted-foreground text-4xl font-bold">{pkg[0].pkg_version}</span>
-			</h1>
+		<Skeleton class="h-16 w-full" />
+	</div>
+{:then pkg}
+	{#if pkg}
+		<div class="animate-fade-in space-y-6">
+			<!-- Breadcrumb -->
+			<a
+				href="{base}/"
+				class="text-muted-foreground hover:text-foreground inline-flex items-center gap-1.5 text-sm transition-colors"
+			>
+				<ArrowLeft class="size-3.5" />
+				All submissions
+			</a>
 
-			<div class="my-4 grid grid-cols-3 gap-4">
-				<Card.Card class="text-center">
-					<Card.CardHeader class="pb-2">
-						<Card.CardTitle class="text-muted-foreground text-xl">Submitted</Card.CardTitle>
-					</Card.CardHeader>
-					<Card.CardContent>
-						<p class="text-3xl">{iso2ago(pkg[0].file_time)}</p>
-						<p class="text-muted-foreground mt-1 font-light">
-							Oldest: {iso2ago(pkg[1].queue[0].file_time)}
-						</p>
-					</Card.CardContent>
-				</Card.Card>
-
-				<Card.Card class="text-center">
-					<Card.CardHeader class="pb-2">
-						<Card.CardTitle class="text-muted-foreground text-xl">Status</Card.CardTitle>
-					</Card.CardHeader>
-					<Card.CardContent>
-						<p class="text-3xl">{pkg[1].info.name}</p>
-						<p class="text-muted-foreground mt-1 font-light">
-							#{pkg[1].queue.indexOf(pkg[0]) + 1} of {pkg[1].queue.length}
-						</p>
-					</Card.CardContent>
-				</Card.Card>
-
-				<Card.Card class="text-center">
-					<Card.CardHeader class="pb-2">
-						<Card.CardTitle class="text-muted-foreground text-xl">Size</Card.CardTitle>
-					</Card.CardHeader>
-					<Card.CardContent>
-						<p class="text-3xl">{humanReadableMemoryUnits(pkg[0].file_bytes)}</p>
-						<p class="text-muted-foreground mt-1 font-light">.tar.gz</p>
-					</Card.CardContent>
-				</Card.Card>
-			</div>
-
-			<div class="text-foreground/80 my-3 px-10">
-				{pkg[1].info.longdescription}
-				<span class="text-muted-foreground text-sm font-light">
-					<a href={pkg[1].info.reference}>({pkg[1].info.reference_label})</a>
+			<!-- Package header -->
+			<div class="flex flex-wrap items-baseline gap-3">
+				<h1 class="text-foreground text-3xl font-bold tracking-tight sm:text-4xl">
+					{pkg[0].pkg_name}
+				</h1>
+				<span class="text-muted-foreground text-xl font-medium sm:text-2xl">
+					v{pkg[0].pkg_version}
 				</span>
 			</div>
 
-			<div class="mt-4 space-y-3">
+			<!-- Info grid -->
+			<div class="grid grid-cols-1 gap-6 sm:grid-cols-3">
 				<div>
-					<p class="text-foreground font-bold">Track this submission:</p>
-					<Input
-						type="text"
-						readonly
-						value={'nx10.github.io/cransubs' + pkg_url_full(pkg[0])}
-						class="mt-1"
-					/>
+					<div class="text-muted-foreground text-xs font-medium uppercase tracking-wider">
+						Submitted
+					</div>
+					<div class="text-foreground mt-1 text-2xl font-semibold">
+						{iso2ago(pkg[0].file_time)}
+					</div>
+					<div class="text-muted-foreground mt-0.5 text-xs">
+						Oldest in queue: {iso2ago(pkg[1].queue[0].file_time)}
+					</div>
 				</div>
+
 				<div>
-					<p class="text-foreground font-bold">Track the newest submission with this name:</p>
-					<Input
-						type="text"
-						readonly
-						value={'nx10.github.io/cransubs' + pkg_url_name(pkg[0])}
-						class="mt-1"
-					/>
+					<div class="text-muted-foreground text-xs font-medium uppercase tracking-wider">
+						Status
+					</div>
+					<div class="text-foreground mt-1 text-2xl font-semibold">
+						{pkg[1].info.name}
+					</div>
+					<div class="text-muted-foreground mt-0.5 text-xs">
+						#{pkg[1].queue.indexOf(pkg[0]) + 1} of {pkg[1].queue.length} in queue
+					</div>
+				</div>
+
+				<div>
+					<div class="text-muted-foreground text-xs font-medium uppercase tracking-wider">
+						Size
+					</div>
+					<div class="text-foreground mt-1 text-2xl font-semibold">
+						{humanReadableMemoryUnits(pkg[0].file_bytes)}
+					</div>
+					<div class="text-muted-foreground mt-0.5 text-xs">.tar.gz</div>
 				</div>
 			</div>
 
-			<div class="mt-3 space-y-1">
+			<!-- Queue description -->
+			<div class="bg-muted/40 rounded-lg px-4 py-3">
+				<p class="text-foreground/80 text-sm leading-relaxed">
+					{pkg[1].info.longdescription}
+					<a
+						href={pkg[1].info.reference}
+						class="text-muted-foreground ml-1 text-xs underline transition-colors hover:text-foreground"
+					>
+						{pkg[1].info.reference_label}
+					</a>
+				</p>
+			</div>
+
+			<!-- Track URLs -->
+			<div class="space-y-3">
+				<div>
+					<label
+						for="track-full"
+						class="text-foreground mb-1 block text-sm font-medium"
+					>
+						Track this submission
+					</label>
+					<div class="flex gap-2">
+						<Input
+							id="track-full"
+							type="text"
+							readonly
+							value={'nx10.github.io/cransubs' + pkg_url_full(pkg[0])}
+							class="bg-muted/30 font-mono text-xs"
+						/>
+						<Button
+							variant="outline"
+							size="icon"
+							class="flex-shrink-0"
+							onclick={() =>
+								handleCopy(
+									'https://nx10.github.io/cransubs' + pkg_url_full(pkg[0]),
+									'full'
+								)}
+						>
+							{#if copiedField === 'full'}
+								<Check class="size-4 text-green-500" />
+							{:else}
+								<Copy class="size-4" />
+							{/if}
+						</Button>
+					</div>
+				</div>
+				<div>
+					<label
+						for="track-name"
+						class="text-foreground mb-1 block text-sm font-medium"
+					>
+						Track newest submission with this name
+					</label>
+					<div class="flex gap-2">
+						<Input
+							id="track-name"
+							type="text"
+							readonly
+							value={'nx10.github.io/cransubs' + pkg_url_name(pkg[0])}
+							class="bg-muted/30 font-mono text-xs"
+						/>
+						<Button
+							variant="outline"
+							size="icon"
+							class="flex-shrink-0"
+							onclick={() =>
+								handleCopy(
+									'https://nx10.github.io/cransubs' + pkg_url_name(pkg[0]),
+									'name'
+								)}
+						>
+							{#if copiedField === 'name'}
+								<Check class="size-4 text-green-500" />
+							{:else}
+								<Copy class="size-4" />
+							{/if}
+						</Button>
+					</div>
+				</div>
+			</div>
+
+			<!-- External links -->
+			<div class="flex flex-wrap gap-x-4 gap-y-1 pt-1">
 				{#if pkg[0].folder !== 'newbies'}
-					<Button
-						variant="link"
+					<a
 						href={'https://CRAN.R-project.org/package=' + pkg[0].pkg_name}
-						class="h-auto p-0"
+						class="text-muted-foreground hover:text-foreground inline-flex items-center gap-1 text-sm underline transition-colors"
 					>
-						Find on CRAN (previous version)
-					</Button>
+						CRAN (previous version)
+						<ExternalLink class="size-3" />
+					</a>
 				{/if}
-				<div>
-					<Button
-						variant="link"
-						href={'https://cran.r-project.org/incoming/' + pkg[0].folder}
-						class="h-auto p-0"
-					>
-						Find on CRAN_incoming
-					</Button>
-				</div>
+				<a
+					href={'https://cran.r-project.org/incoming/' + pkg[0].folder}
+					class="text-muted-foreground hover:text-foreground inline-flex items-center gap-1 text-sm underline transition-colors"
+				>
+					CRAN incoming
+					<ExternalLink class="size-3" />
+				</a>
 			</div>
 
-			<Separator class="mt-4" />
-
-			<div
-				class="text-muted-foreground my-3 flex items-center justify-end gap-2 text-sm font-light"
+			<!-- Last updated -->
+			<div class="text-muted-foreground border-t pt-4 text-xs">
+				Last updated {iso2ago(pkg[0].request_time)}
+			</div>
+		</div>
+	{:else}
+		<div class="animate-fade-in space-y-4">
+			<a
+				href="{base}/"
+				class="text-muted-foreground hover:text-foreground inline-flex items-center gap-1.5 text-sm transition-colors"
 			>
-				<span>Updated {iso2ago(pkg[0].request_time)}.</span>
-				<a href="{base}/about" class="text-foreground/70 hover:underline">About this page</a>
-			</div>
-		{:else}
-			<p class="text-foreground">Package does not exist (anymore?)</p>
-		{/if}
-	{:catch error}
-		<p class="text-destructive">{error.message}</p>
-	{/await}
-
-	<div class="mt-3">
-		<a href="{base}/" class="text-muted-foreground hover:text-foreground hover:underline">
-			&larr; Back to browse
-		</a>
-	</div>
-</main>
+				<ArrowLeft class="size-3.5" />
+				All submissions
+			</a>
+			<p class="text-muted-foreground">This package does not exist (anymore?).</p>
+		</div>
+	{/if}
+{:catch error}
+	<p class="text-destructive">{error.message}</p>
+{/await}

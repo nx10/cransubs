@@ -33,3 +33,12 @@ export function iso2locale(iso: string) {
 export function iso2ago(iso: string) {
 	return formatDistanceToNow(parseISO(iso), { addSuffix: true });
 }
+
+export async function copyToClipboard(text: string): Promise<boolean> {
+	try {
+		await navigator.clipboard.writeText(text);
+		return true;
+	} catch {
+		return false;
+	}
+}
